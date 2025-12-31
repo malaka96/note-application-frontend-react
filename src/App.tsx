@@ -4,6 +4,7 @@ import Navbar from "./componets/Navbar";
 import Create from "./assets/pages/create/Create";
 import Favorite from "./assets/pages/favorite/Favorite";
 import Home from "./assets/pages/home/Home";
+import Detail from "./assets/pages/details/Detail";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home/>}></Route>
         <Route path="/create" element={<Create />}></Route>
         <Route path="/favorite" element={<Favorite />}></Route>
+        <Route path="/details/:id" element={<Detail/>}></Route>
       </Routes>
     </>
   );
