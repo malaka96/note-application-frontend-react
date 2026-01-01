@@ -1,4 +1,5 @@
 import { Edit2, Heart, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export interface Note {
@@ -14,6 +15,33 @@ interface NoteCardProp {
 }
 
 const NoteCard = ({ note, onDelete }: NoteCardProp) => {
+
+  const [isFavorite, setFavorite] = useState(note.favorite);
+
+  async function handleFavorite(newState: boolean) {
+    try{
+      const response = await fetch(`http://localhost:8080/update`,{
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: `{
+            "id": ${note.id},
+            "title": "${note.title}",
+            "body": "${note.body}",
+            "isFavorite": ${newState}
+        }`,
+      })
+
+      if(!response.ok) throw new Error("Failed to handle favorite");
+      setFavorite(newState);
+
+    }catch(e){
+      console.log(e);
+    }
+    
+  }
+
   return (
     <div className="bg-white border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-6 h-full flex flex-col">
       {/* Title + Icons Row */}
@@ -34,8 +62,9 @@ const NoteCard = ({ note, onDelete }: NoteCardProp) => {
           <button
             className="text-gray-600 hover:text-blue-600 transition-colors"
             aria-label="Edit note"
+            onClick={() => handleFavorite(!isFavorite)}
           >
-            {note.favorite ? (
+            {isFavorite ? (
               <Heart className="w-5 h-5 text-black" fill="text-black" />
             ) : (
               <Heart className="w-5 h-5 text-black"/>
