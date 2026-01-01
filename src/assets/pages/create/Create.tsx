@@ -19,7 +19,11 @@ const Create = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({title,body})
+        body: `{
+            "title": "${title}",
+            "body": "${body}",
+            "isFavorite": ${false}
+        }`
       });
 
       if(!response.ok) throw new Error("Failed to create a note");
