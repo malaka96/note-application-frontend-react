@@ -11,6 +11,7 @@ const Detail = () => {
   useEffect(() => {
     async function fetchNoteDetail() {
       try {
+        console.log(id);
         const reponse = await fetch(`http://localhost:8080/${id}`);
         if (!reponse.ok) throw new Error("Failed to fetch note data");
 
@@ -58,7 +59,7 @@ const Detail = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-black mb-8">Create New Note</h1>
+        <h1 className="text-3xl font-bold text-black mb-8">Update Note</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title Field */}
