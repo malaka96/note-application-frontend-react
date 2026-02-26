@@ -23,6 +23,8 @@ const Login = () => {
       }
     }catch(error){
       console.log(error);
+    }finally{
+      setIsLoading(false);
     }
 
   }
