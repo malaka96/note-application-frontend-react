@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { createNote } from "../../../api/NoteApi";
+import { NoteContext } from "../../../context/NoteContext";
+import type { Note } from "../../../types/Types";
 
 const Create = () => {
 
   const [title,  setTitle] = useState("");
   const [body, setBody] = useState("");
+
+  const {setNotes} = useContext(NoteContext)!;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>){
     event.preventDefault();
@@ -14,26 +19,17 @@ const Create = () => {
     }
 
     try{
-      const response = await fetch(`http://localhost:8080/add`,{
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: `{
-            "title": "${title}",
-            "body": "${body}",
-            "isFavorite": ${false}
-        }`
-      });
-
-      if(!response.ok) throw new Error("Failed to create a note");
-
-      alert("Note created successfully!");
-      setTitle("");
-      setBody("");
-
-    }catch(e){
-      console.log(e);
+      const res = await createNote(title, body);
+      if(res.status === 201){
+        setNotes((prev) => [...prev, res.data as Note]);
+        setTitle("");
+        setBody("");
+      }else{
+        // setup toasts
+      }
+    }catch(error){
+      // setup toasts
+      console.log(error);
     }
 
   }

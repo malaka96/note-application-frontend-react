@@ -21,7 +21,7 @@ const NoteContextProvider = ({ children }: NoteContextProviderProp) => {
         fetchAllNotes().then(res => {setNotes(res.data);console.log(res.data);})
         .catch(() => setNotes([]))
         .finally(() => setIsLoading(false));
-    },[user])
+    },[user]);
 
     const contextValue = {
         notes,
