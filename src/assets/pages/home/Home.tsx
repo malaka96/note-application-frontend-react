@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
-import NoteCard, { type Note } from "../../../componets/NoteCard";
+import { useContext } from "react";
+import NoteCard from "../../../componets/NoteCard";
+import { NoteContext } from "../../../context/NoteContext";
 
 const Home = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+
+  const {notes} = useContext(NoteContext)!;
 
   // useEffect(() => {
   //   async function fetchAllNotes() {
@@ -21,25 +23,25 @@ const Home = () => {
   //   fetchAllNotes();
   // }, []);
 
-  async function handleDelete(id: number) {
-    if(!window.confirm("Are you sure you want to delete this note?")){
-      return;
-    }
-    console.log(id);
-    try{
-      const respone = await fetch(`http://localhost:8080/delete/${id}`,{
-        method:'DELETE'
-      });
-      if(!respone.ok){
-        throw new Error("Failed to delete on server");
-      }
+  // async function handleDelete(id: number) {
+  //   if(!window.confirm("Are you sure you want to delete this note?")){
+  //     return;
+  //   }
+  //   console.log(id);
+  //   try{
+  //     const respone = await fetch(`http://localhost:8080/delete/${id}`,{
+  //       method:'DELETE'
+  //     });
+  //     if(!respone.ok){
+  //       throw new Error("Failed to delete on server");
+  //     }
 
-      setNotes(prevNotes => prevNotes.filter(note =>note.id !== id));
+  //     setNotes(prevNotes => prevNotes.filter(note =>note.id !== id));
 
-    }catch(e){
-      console.log(e);
-    }
-  }
+  //   }catch(e){
+  //     console.log(e);
+  //   }
+  // }
 
   
 
@@ -47,7 +49,7 @@ const Home = () => {
     <div className="p-8 container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       {notes && notes.length > 0 ? (
         notes.map((note) => (
-          <NoteCard key={note.id} note={note} onDelete={handleDelete} /> // Use your NoteCard component
+          <NoteCard key={note.id} note={note}/>
         ))
       ) : (
         <p className="text-center text-gray-500 col-span-full">No notes yet</p>

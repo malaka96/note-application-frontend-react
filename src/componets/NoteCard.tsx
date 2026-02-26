@@ -1,22 +1,17 @@
 import { Edit2, Heart, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import type { Note } from "../types/Types";
 
-export interface Note {
-  id: number;
-  title: string;
-  body: string;
-  favorite: boolean;
-}
+
 
 interface NoteCardProp {
   note: Note;
-  onDelete: (id: number) => void;
 }
 
-const NoteCard = ({ note, onDelete }: NoteCardProp) => {
+const NoteCard = ({ note }: NoteCardProp) => {
 
-  const [isFavorite, setFavorite] = useState(note.favorite);
+  const [isFavorite, setFavorite] = useState(note.isFavorite);
 
   async function handleFavorite(newState: boolean) {
     try{
@@ -72,7 +67,7 @@ const NoteCard = ({ note, onDelete }: NoteCardProp) => {
           </button>
 
           <button
-            onClick={() => onDelete(note.id)}
+            onClick={() => {}}
             className="text-gray-600 hover:text-red-600 transition-colors"
             aria-label="Delete note"
           >
