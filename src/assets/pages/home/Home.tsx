@@ -4,22 +4,22 @@ import NoteCard, { type Note } from "../../../componets/NoteCard";
 const Home = () => {
   const [notes, setNotes] = useState<Note[]>([]);
 
-  useEffect(() => {
-    async function fetchAllNotes() {
-      try {
-        const response = await fetch(`http://localhost:8080/note/all`);
-        const notes = await response.json();
-        if (notes) {
-          console.log(notes);
-          setNotes(notes);
-        }
-      } catch (e) {
-        console.log(e);
-        setNotes([]);
-      }
-    }
-    fetchAllNotes();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchAllNotes() {
+  //     try {
+  //       const response = await fetch(`http://localhost:8080/note/all`);
+  //       const notes = await response.json();
+  //       if (notes) {
+  //         console.log(notes);
+  //         setNotes(notes);
+  //       }
+  //     } catch (e) {
+  //       console.log(e);
+  //       setNotes([]);
+  //     }
+  //   }
+  //   fetchAllNotes();
+  // }, []);
 
   async function handleDelete(id: number) {
     if(!window.confirm("Are you sure you want to delete this note?")){

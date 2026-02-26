@@ -1,8 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { userLogin } from "../../../api/AuthApi";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const {setUser, setIsLoading} = useContext(AuthContext)!;
+
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+
+  const login = async () => {
+    setIsLoading(true);
+    try{
+      const res = await userLogin(email,password);
+      if(res.status === 200){
+        setUser(res.data);
+        navigate("/")
+      }else{
+        // setup toasts
+      }
+    }catch(error){
+      console.log(error);
+    }
+
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -21,6 +44,8 @@ const Login = () => {
             <input
               id="email"
               type="email"
+              value={email}
+              onChange={(e) => {setEmail(e.target.value);}}
               placeholder="Enter your email..."
               className="
               w-full px-4 py-3 
@@ -47,6 +72,8 @@ const Login = () => {
             <input
               id="password"
               type="password"
+              value={password}
+              onChange={(e) => {setPassword(e.target.value);}}
               placeholder="Enter your password..."
               className="
               w-full px-4 py-3 
@@ -65,6 +92,7 @@ const Login = () => {
           {/* Buttons */}
           <div className="pt-4 flex flex-col sm:flex-row gap-4">
             <button
+            onClick={login}
               type="button"
               className="
               w-full sm:w-auto 
@@ -85,7 +113,9 @@ const Login = () => {
             </button>
 
             <button
-            onClick={() => {navigate("/register")}}
+              onClick={() => {
+                navigate("/register");
+              }}
               type="button"
               className="
               w-full sm:w-auto 
@@ -104,7 +134,6 @@ const Login = () => {
             >
               Register
             </button>
-
           </div>
         </form>
       </div>

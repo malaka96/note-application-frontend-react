@@ -1,9 +1,11 @@
 import { LogIn, Plus, Star, User2Icon } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar: React.FC = () => {
   const [isAuthorized, setIsAuthorized] = useState(true);
+  const {user} = useContext(AuthContext)!;
 
   return (
     <nav className="bg-black text-white shadow-lg w-full">
@@ -16,7 +18,7 @@ const Navbar: React.FC = () => {
             </h1>
           </div>
 
-          {isAuthorized ? (
+          {user ? (
             <div className="flex items-center gap-4">
               <NavLink to={"/favorite"}>
                 <button className="bg-white hover:bg-[#d9d9d9] px-5 py-2 rounded-md text-black text-base sm:text-lg font-medium flex items-center gap-2 transition duration-200">
