@@ -7,7 +7,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchAllNotes() {
       try {
-        const response = await fetch(`http://localhost:8080/`);
+        const response = await fetch(`http://localhost:8080/note/all`);
         const notes = await response.json();
         if (notes) {
           console.log(notes);

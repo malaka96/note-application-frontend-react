@@ -3,7 +3,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
 
   return (
     <nav className="bg-black text-white shadow-lg w-full">
