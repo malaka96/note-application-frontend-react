@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchNote } from "../../../api/NoteApi";
+import { fetchNote, updateNote } from "../../../api/NoteApi";
+import { NoteContext } from "../../../context/NoteContext";
 
 const Detail = () => {
   const { id } = useParams<{ id: string }>();
@@ -9,18 +10,20 @@ const Detail = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
+  const { setNotes } = useContext(NoteContext)!;
+
   useEffect(() => {
     async function fetchNoteDetail() {
       try {
         const numbericId = Number(id);
         const res = await fetchNote(numbericId);
-        if(res.status === 200){
+        if (res.status === 200) {
           setTitle(res.data.title);
           setBody(res.data.body);
           setFavorite(res.data.isFavorite);
           console.log("note detials fetched successfull");
-        }else{
-          // 
+        } else {
+          //
           console.log(res.status);
         }
       } catch (e) {
@@ -39,20 +42,34 @@ const Detail = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/update`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: `{
-            "id": ${id},
-            "title": "${title}",
-            "body": "${body}",
-            "isFavorite": ${favorite}
-        }`,
-      });
-      if (!response.ok) throw new Error("Failed to update note");
-      alert("Note updated successfully!");
+      const numbericId = Number(id);
+      // const response = await fetch(`http://localhost:8080/update`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: `{
+      //       "id": ${id},
+      //       "title": "${title}",
+      //       "body": "${body}",
+      //       "isFavorite": ${favorite}
+      //   }`,
+      // });
+      // if (!response.ok) throw new Error("Failed to update note");
+      // alert("Note updated successfully!");
+      const res = await updateNote(numbericId, title, body, favorite!);
+      if (res.status === 200) {
+        setNotes((prev) =>
+          prev.map((note) =>
+            note.id === numbericId
+              ? { ...note, title: title, body: body, isFavorite: favorite! }
+              : note,
+          ),
+        );
+        console.log(`${id} note updated successfully`);
+      }else{
+        console.log(res.status);
+      }
     } catch (e) {
       console.log(e);
     }
