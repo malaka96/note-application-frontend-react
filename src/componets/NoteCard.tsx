@@ -2,6 +2,7 @@ import { Edit2, Heart, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Note } from "../types/Types";
+import { updateNoteFavoriteState } from "../api/NoteApi";
 
 
 
@@ -13,24 +14,17 @@ const NoteCard = ({ note }: NoteCardProp) => {
 
   const [isFavorite, setFavorite] = useState(note.isFavorite);
 
-  async function handleFavorite(newState: boolean) {
+  async function handleFavorite() {
     try{
-      const response = await fetch(`http://localhost:8080/update`,{
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: `{
-            "id": ${note.id},
-            "title": "${note.title}",
-            "body": "${note.body}",
-            "isFavorite": ${newState}
-        }`,
-      })
-
-      if(!response.ok) throw new Error("Failed to handle favorite");
-      setFavorite(newState);
-
+      const res = await updateNoteFavoriteState(note.id, !isFavorite);
+      if(res.status === 200){
+        // toasts 
+        setFavorite(!isFavorite);
+        console.log(`${note.id} note's favorite state updated`);
+      }else{
+        // toasts
+        console.log(res.status);
+      }
     }catch(e){
       console.log(e);
     }
@@ -57,7 +51,7 @@ const NoteCard = ({ note }: NoteCardProp) => {
           <button
             className="text-gray-600 hover:text-blue-600 transition-colors"
             aria-label="Edit note"
-            onClick={() => handleFavorite(!isFavorite)}
+            onClick={() => handleFavorite()}
           >
             {isFavorite ? (
               <Heart className="w-5 h-5 text-black" fill="text-black" />

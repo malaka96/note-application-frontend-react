@@ -24,3 +24,20 @@ export const createNote = async (title: string, body: string) => {
         throw new Error("Unexpected error");
     }
 }
+
+export const updateNoteFavoriteState = async (id: number, isFavorite: boolean) => {
+    try{
+        const res = await api.put("note/update/favorite", null, {
+            params: {
+                id:id,
+                isFavorite:isFavorite
+            }
+        });
+        return res;
+    }catch(e){
+        if(axios.isAxiosError(e)){
+            throw new Error(e.response?.data?.message || "Failed to update note");
+        }
+        throw new Error("Unexpected error");
+    }
+}
