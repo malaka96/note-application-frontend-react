@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { fetchNote } from "../../../api/NoteApi";
 
 const Detail = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,15 +12,16 @@ const Detail = () => {
   useEffect(() => {
     async function fetchNoteDetail() {
       try {
-        console.log(id);
-        const reponse = await fetch(`http://localhost:8080/${id}`);
-        if (!reponse.ok) throw new Error("Failed to fetch note data");
-
-        const data = await reponse.json();
-        if (data) {
-          setTitle(data.title);
-          setBody(data.body);
-          setFavorite(data.favorite);
+        const numbericId = Number(id);
+        const res = await fetchNote(numbericId);
+        if(res.status === 200){
+          setTitle(res.data.title);
+          setBody(res.data.body);
+          setFavorite(res.data.isFavorite);
+          console.log("note detials fetched successfull");
+        }else{
+          // 
+          console.log(res.status);
         }
       } catch (e) {
         console.log(e);
