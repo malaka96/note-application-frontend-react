@@ -8,9 +8,10 @@ import { updateNoteFavoriteState } from "../api/NoteApi";
 
 interface NoteCardProp {
   note: Note;
+  handleDelete: (id:number) => void;
 }
 
-const NoteCard = ({ note }: NoteCardProp) => {
+const NoteCard = ({ note, handleDelete }: NoteCardProp) => {
 
   const [isFavorite, setFavorite] = useState(note.isFavorite);
 
@@ -61,7 +62,7 @@ const NoteCard = ({ note }: NoteCardProp) => {
           </button>
 
           <button
-            onClick={() => {}}
+            onClick={() => {handleDelete(note.id);}}
             className="text-gray-600 hover:text-red-600 transition-colors"
             aria-label="Delete note"
           >

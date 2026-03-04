@@ -89,3 +89,19 @@ export const updateNote = async (
     throw new Error("Unexpected error");
   }
 };
+
+export const deleteNote = async (id: number) => {
+  try {
+    const res = await api.delete("/note/delete", {
+      params: {
+        id: id,
+      },
+    });
+    return res;
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      throw new Error(e.response?.data?.message || "Failed to delete note");
+    }
+    throw new Error("Unexpected error");
+  }
+};
