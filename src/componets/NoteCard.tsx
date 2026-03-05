@@ -1,35 +1,47 @@
 import { Edit2, Heart, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Note } from "../types/Types";
 import { updateNoteFavoriteState } from "../api/NoteApi";
-
-
+import { NoteContext } from "../context/NoteContext";
 
 interface NoteCardProp {
   note: Note;
-  handleDelete: (id:number) => void;
+  handleDelete: (id: number) => void;
 }
 
 const NoteCard = ({ note, handleDelete }: NoteCardProp) => {
-
   const [isFavorite, setFavorite] = useState(note.isFavorite);
+  const { setNotes, setFavoriteNotes } = useContext(NoteContext)!;
 
-  async function handleFavorite() {
-    try{
-      const res = await updateNoteFavoriteState(note.id, !isFavorite);
-      if(res.status === 200){
-        // toasts 
-        setFavorite(!isFavorite);
+   async function handleFavorite() {
+    const newIsFavorite = !isFavorite; // Calculate the new state once
+    try {
+      const res = await updateNoteFavoriteState(note.id, newIsFavorite);
+      if (res.status === 200) {
+        setFavorite(newIsFavorite); // Update local state
+        setNotes((prev) =>
+          prev.map((prevNote) =>
+            prevNote.id === note.id
+              ? { ...prevNote, isFavorite: newIsFavorite }
+              : prevNote,
+          ),
+        );
+        setFavoriteNotes((prev) => {
+          const updatedNote = { ...note, isFavorite: newIsFavorite };
+          if (newIsFavorite) {
+            return [...prev, updatedNote];
+          } else {
+            return prev.filter((n) => n.id !== note.id);
+          }
+        });
         console.log(`${note.id} note's favorite state updated`);
-      }else{
-        // toasts
+      } else {
         console.log(res.status);
       }
-    }catch(e){
+    } catch (e) {
       console.log(e);
     }
-    
   }
 
   return (
@@ -46,7 +58,9 @@ const NoteCard = ({ note, handleDelete }: NoteCardProp) => {
             className="text-gray-600 hover:text-blue-600 transition-colors"
             aria-label="Edit note"
           >
-            <Link to={`/details/${note.id}`} ><Edit2 className="w-5 h-5" /></Link>
+            <Link to={`/details/${note.id}`}>
+              <Edit2 className="w-5 h-5" />
+            </Link>
           </button>
 
           <button
@@ -57,12 +71,14 @@ const NoteCard = ({ note, handleDelete }: NoteCardProp) => {
             {isFavorite ? (
               <Heart className="w-5 h-5 text-black" fill="text-black" />
             ) : (
-              <Heart className="w-5 h-5 text-black"/>
+              <Heart className="w-5 h-5 text-black" />
             )}
           </button>
 
           <button
-            onClick={() => {handleDelete(note.id);}}
+            onClick={() => {
+              handleDelete(note.id);
+            }}
             className="text-gray-600 hover:text-red-600 transition-colors"
             aria-label="Delete note"
           >

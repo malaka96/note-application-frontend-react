@@ -5,50 +5,15 @@ import { deleteNote } from "../../../api/NoteApi";
 
 const Home = () => {
 
-  const {notes, setNotes} = useContext(NoteContext)!;
+  const {notes, setNotes, setFavoriteNotes} = useContext(NoteContext)!;
 
-  // useEffect(() => {
-  //   async function fetchAllNotes() {
-  //     try {
-  //       const response = await fetch(`http://localhost:8080/note/all`);
-  //       const notes = await response.json();
-  //       if (notes) {
-  //         console.log(notes);
-  //         setNotes(notes);
-  //       }
-  //     } catch (e) {
-  //       console.log(e);
-  //       setNotes([]);
-  //     }
-  //   }
-  //   fetchAllNotes();
-  // }, []);
-
-  // async function handleDelete(id: number) {
-  //   if(!window.confirm("Are you sure you want to delete this note?")){
-  //     return;
-  //   }
-  //   console.log(id);
-  //   try{
-  //     const respone = await fetch(`http://localhost:8080/delete/${id}`,{
-  //       method:'DELETE'
-  //     });
-  //     if(!respone.ok){
-  //       throw new Error("Failed to delete on server");
-  //     }
-
-  //     setNotes(prevNotes => prevNotes.filter(note =>note.id !== id));
-
-  //   }catch(e){
-  //     console.log(e);
-  //   }
-  // }
 
   async function handleDelete(id: number) {
     try{
       const res = await deleteNote(id);
       if(res.status === 200){
         setNotes((prev) => prev.filter(note => note.id !== id));
+        setFavoriteNotes((prev) => prev.filter(note => note.id !== id));
         console.log("note deleted");
       }else{
         console.log(res.status);

@@ -10,7 +10,7 @@ const Detail = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const { setNotes } = useContext(NoteContext)!;
+  const { setNotes, setFavoriteNotes } = useContext(NoteContext)!;
 
   useEffect(() => {
     async function fetchNoteDetail() {
@@ -66,8 +66,19 @@ const Detail = () => {
               : note,
           ),
         );
+
+        if (favorite) {
+          setFavoriteNotes((prev) =>
+            prev.map((note) =>
+              note.id === numbericId
+                ? { ...note, title: title, body: body, isFavorite: favorite! }
+                : note,
+            ),
+          );
+        }
+
         console.log(`${id} note updated successfully`);
-      }else{
+      } else {
         console.log(res.status);
       }
     } catch (e) {
