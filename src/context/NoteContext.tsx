@@ -5,6 +5,8 @@ import type { Note } from "../types/Types";
 type NoteContextType = {
     notes: Note[];
     setNotes: Dispatch<SetStateAction<Note[]>>;
+    favoriteNotes: Note[];
+    setFavoriteNotes: Dispatch<SetStateAction<Note[]>>;
     isLoading: boolean;
     setIsLoading: Dispatch<SetStateAction<boolean>>;
 }

@@ -17,7 +17,7 @@ const Login = () => {
       const res = await userLogin(email,password);
       if(res.status === 200){
         setUser(res.data);
-        navigate("/")
+        window.location.href = "/";
       }else{
         // setup toasts
       }

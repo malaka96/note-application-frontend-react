@@ -6,21 +6,32 @@ export const userLogin = async (email: string, password: string) => {
     const res = await api.post("/auth/login", { email, password });
     return res;
   } catch (error) {
-    if(axios.isAxiosError(error)){
-        throw new Error(error.response?.data?.message || "Login failed");
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Login failed");
     }
     throw new Error("Unexpected error");
   }
 };
 
 export const userRegister = async (email: string, password: string) => {
-    try{
-        const res = await api.post("/user/register",{email,password});
-        return res;
-    }catch(error){
-        if(axios.isAxiosError(error)){
-            throw new Error(error.response?.data?.message || "Reigstration failed");
-        }
-        throw new Error("Unexpected error");
+  try {
+    const res = await api.post("/user/register", { email, password });
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Reigstration failed");
     }
-}
+    throw new Error("Unexpected error");
+  }
+};
+
+export const userLogout = async () => {
+  try {
+    const res = await api.get("/auth/logout");
+    return res;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || "Logout failed");
+    }
+  }
+};

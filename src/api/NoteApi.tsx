@@ -105,3 +105,15 @@ export const deleteNote = async (id: number) => {
     throw new Error("Unexpected error");
   }
 };
+
+export const fetchFavoriteNotes = async () => {
+  try{
+    const res = await api.get("/note/all/favorite");
+    return res;
+  }catch(e){
+    if (axios.isAxiosError(e)) {
+      throw new Error(e.response?.data?.message || "Failed to fetch favorite notes");
+    }
+    throw new Error("Unexpected error");
+  }
+}

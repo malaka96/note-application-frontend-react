@@ -1,11 +1,12 @@
 import { LogIn, Plus, Star, User2Icon } from "lucide-react";
-import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar: React.FC = () => {
-  const [isAuthorized, setIsAuthorized] = useState(true);
+  // const [isAuthorized, setIsAuthorized] = useState(true);
   const {user} = useContext(AuthContext)!;
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-black text-white shadow-lg w-full">
@@ -36,7 +37,7 @@ const Navbar: React.FC = () => {
 
               <NavLink to={"/account"}>
                 <button
-                onClick={() => setIsAuthorized(false)}
+                onClick={() => {navigate("/account");}}
                  className="bg-white hover:bg-[#d9d9d9] text-black w-11 h-11 rounded-full flex items-center justify-center transition duration-200 border border-black hover:shadow-md hover:shadow-white/20">
                   <User2Icon className="w-5 h-5" />
                 </button>
