@@ -15,11 +15,11 @@ const NoteCard = ({ note, handleDelete }: NoteCardProp) => {
   const { setNotes, setFavoriteNotes } = useContext(NoteContext)!;
 
    async function handleFavorite() {
-    const newIsFavorite = !isFavorite; // Calculate the new state once
+    const newIsFavorite = !isFavorite; 
     try {
       const res = await updateNoteFavoriteState(note.id, newIsFavorite);
       if (res.status === 200) {
-        setFavorite(newIsFavorite); // Update local state
+        setFavorite(newIsFavorite);
         setNotes((prev) =>
           prev.map((prevNote) =>
             prevNote.id === note.id

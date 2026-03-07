@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { createNote } from "../../../api/NoteApi";
 import { NoteContext } from "../../../context/NoteContext";
 import type { Note } from "../../../types/Types";
+import toast from "react-hot-toast";
 
 const Create = () => {
 
@@ -24,11 +25,12 @@ const Create = () => {
         setNotes((prev) => [...prev, res.data as Note]);
         setTitle("");
         setBody("");
+        toast.success("Note created successfully!");
       }else{
-        // setup toasts
+        toast.error("Failed to create note. Please try again.");
       }
     }catch(error){
-      // setup toasts
+      toast.error("An error occurred while creating the note.");
       console.log(error);
     }
 

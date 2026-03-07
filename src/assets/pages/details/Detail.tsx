@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchNote, updateNote } from "../../../api/NoteApi";
 import { NoteContext } from "../../../context/NoteContext";
+import toast from "react-hot-toast";
 
 const Detail = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,12 +22,14 @@ const Detail = () => {
           setTitle(res.data.title);
           setBody(res.data.body);
           setFavorite(res.data.isFavorite);
+          toast.success("Note details fetched successfully!");
           console.log("note detials fetched successfull");
         } else {
-          //
+          toast.error("Failed to fetch note details.");
           console.log(res.status);
         }
       } catch (e) {
+        toast.error("An error occurred while fetching note details.");
         console.log(e);
       }
     }
@@ -76,12 +79,14 @@ const Detail = () => {
             ),
           );
         }
-
+        toast.success("Note updated successfully!");
         console.log(`${id} note updated successfully`);
       } else {
+        toast.error("Failed to update note.");
         console.log(res.status);
       }
     } catch (e) {
+      toast.error("An error occurred while updating the note.");
       console.log(e);
     }
   }

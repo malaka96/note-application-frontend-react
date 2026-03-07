@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { userLogin } from "../../../api/AuthApi";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Login = () => {
     try{
       const res = await userLogin(email,password);
       if(res.status === 200){
+        toast.success("Login successful!");
         setUser(res.data);
         window.location.href = "/";
       }else{

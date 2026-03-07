@@ -9,10 +9,12 @@ import Login from "./assets/pages/login/Login";
 import Register from "./assets/pages/register/Register";
 import Account from "./assets/pages/account/Account";
 import PrivateRoute from "./PrivateRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
+    <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>

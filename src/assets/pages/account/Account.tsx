@@ -3,17 +3,23 @@ import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { userLogout } from "../../../api/AuthApi";
 import { useNavigate } from "react-router-dom";
+import { NoteContext } from "../../../context/NoteContext";
+import toast from "react-hot-toast";
 
 const Account = () => {
   const { user, setUser } = useContext(AuthContext)!;
+  const { setNotes, setFavoriteNotes } = useContext(NoteContext)!;
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await userLogout();
       setUser(null);
+      setNotes([]);
+      setFavoriteNotes([]);
       navigate("/login");
     } catch (error) {
+      toast.error("Logout failed. Please try again.");
       console.error("Logout failed:", error);
     }
   };
