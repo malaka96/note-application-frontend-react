@@ -22,8 +22,6 @@ const Detail = () => {
           setTitle(res.data.title);
           setBody(res.data.body);
           setFavorite(res.data.isFavorite);
-          toast.success("Note details fetched successfully!");
-          console.log("note detials fetched successfull");
         } else {
           toast.error("Failed to fetch note details.");
           console.log(res.status);
