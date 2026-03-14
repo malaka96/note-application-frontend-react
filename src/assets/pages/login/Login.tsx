@@ -24,6 +24,7 @@ const Login = () => {
         // setup toasts
       }
     }catch(error){
+      toast.success("Login failed. Please check your credentials and try again.");
       console.log(error);
     }finally{
       setIsLoading(false);

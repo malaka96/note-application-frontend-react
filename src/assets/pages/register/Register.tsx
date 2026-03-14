@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { userRegister } from "../../../api/AuthApi";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Register = () => {
       const res = await userRegister(email, password);
       if(res.status === 200){
         navigate("/login");
+        toast.success("User registered");
         console.log("user registered");
       }else{
         // setup toasts
@@ -26,6 +28,7 @@ const Register = () => {
       }
     }catch(error){
       console.log(error);
+      toast.error("Cannot register");
     }finally{
       setIsLoading(false);
     }
